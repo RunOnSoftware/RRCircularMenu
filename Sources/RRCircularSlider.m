@@ -32,7 +32,6 @@
 
 - (void) dealloc {
     CGImageRelease(gradient);
-    [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -75,10 +74,6 @@
         CGImageRelease(mask);
         CGImageRelease(fullGradient);
         
-        [colors release];
-        [locations release];
-
-        
         UIImage *thumbImage = [self thumbImage];
         thumb = [[UIButton alloc] initWithFrame:CGRectZero];
         [thumb setImage:thumbImage forState:UIControlStateNormal];
@@ -92,7 +87,6 @@
 
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
         [self addGestureRecognizer:pan];
-        [pan release];
     }
     return self;
 }
@@ -292,7 +286,7 @@
 #define RGBA_B(c) ((uint)c >> 8 & 255)
 #define RGBA_A(c) ((uint)c >> 0 & 255)
 
-static void angleGradient(byte* data, int w, int h, int* colors, int colorCount, float* locations, int locationCount);
+static void angleGradient(byte* data, int w, int h, int* colors, NSInteger colorCount, float* locations, NSInteger locationCount);
 
 - (CGImageRef)newImageGradientInRect:(CGRect)rect colors:(NSArray *)colorsArray locations:(NSArray *)locationsArray{
 	int w = CGRectGetWidth(rect);
@@ -301,8 +295,8 @@ static void angleGradient(byte* data, int w, int h, int* colors, int colorCount,
 	int bpp = 4 * bitsPerComponent / 8;
 	int byteCount = w * h * bpp;
 	
-	int colorCount = colorsArray.count;
-	int locationCount = 0;
+	NSInteger colorCount = colorsArray.count;
+	NSInteger locationCount = 0;
 	int* colors = NULL;
 	float* locations = NULL;
 	
@@ -310,16 +304,14 @@ static void angleGradient(byte* data, int w, int h, int* colors, int colorCount,
 		colors = calloc(colorCount, bpp);
 		int *p = colors;
 		for (id cg in colorsArray) {
-			float r, g, b, a;
+			CGFloat r, g, b, a;
 			UIColor *c = [[UIColor alloc] initWithCGColor:(CGColorRef)cg];
 			if (![c getRed:&r green:&g blue:&b alpha:&a]) {
 				if (![c getWhite:&r alpha:&a]) {
-					[c release];
 					continue;
 				}
 				g = b = r;
 			}
-			[c release];
 			*p++ = RGBAF(r, g, b, a);
 		}
 	}
@@ -362,7 +354,7 @@ static inline int lerp(int a, int b, float w)
 				blerp(RGBA_A(a), RGBA_A(b), w));
 }
 
-void angleGradient(byte* data, int w, int h, int* colors, int colorCount, float* locations, int locationCount)
+void angleGradient(byte* data, int w, int h, int* colors, NSInteger colorCount, float* locations, NSInteger locationCount)
 {
 	if (colorCount < 1) return;
 	if (locationCount > 0 && locationCount != colorCount) return;
@@ -379,7 +371,7 @@ void angleGradient(byte* data, int w, int h, int* colors, int colorCount, float*
             if (dirY < 0) angle += 2 * M_PI;
             angle /= 2 * M_PI;
             
-            int index = 0, nextIndex = 0;
+            NSInteger index = 0, nextIndex = 0;
             float t = 0;
             
             if (locationCount > 0) {

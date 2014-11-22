@@ -32,7 +32,6 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openMenu)];
     [self.view addGestureRecognizer:tap];
-    [tap release];
 }
 
 - (void) openMenu {
@@ -40,7 +39,7 @@
         [menu hideWithAnimationBlock:^{
             self.view.backgroundColor = [UIColor whiteColor];
         }];
-        [menu release], menu = nil;
+        menu = nil;
     } else {
         menu = [[RRCircularMenu alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 180, self.view.frame.size.width, 180)];
         menu.delegate = self;

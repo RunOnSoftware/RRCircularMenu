@@ -30,7 +30,6 @@
     items = _release(items);
     label = _release(label);
     slider = _release(slider);
-    [super dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -42,7 +41,6 @@
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self addGestureRecognizer:tap];
-        [tap release];
     }
     return self;
 }
@@ -67,7 +65,7 @@
     [[items lastObject] setLastOne:YES];
     
     // disable last border for symmetry
-    [[items lastObject] setBorderWidth:0];
+    [(RRCircularItem *)[items lastObject] setBorderWidth:0];
     
     // Add center label
     label = [[RRCircularMenuLabel alloc] initWithFrame:CGRectMake(10 + (self.frame.size.width - 20) / 2 - 50, self.frame.size.height - 50 - 20, 100, 100)];
@@ -98,7 +96,6 @@
     item.inactiveImage = [UIImage imageNamed:[[title lowercaseString] stringByAppendingString:@".off@2x.png"]];
     [items addObject:item];
     [self addSubview:item];
-    [item release];
 }
 
 # pragma mark - Events handling

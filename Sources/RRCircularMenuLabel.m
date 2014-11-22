@@ -38,7 +38,6 @@
     _inactiveTextColor = _release(_inactiveTextColor);
     _activeTextColor = _release(_activeTextColor);
     _font = _release(_font);
-    [super dealloc];
 }
 
 - (void) drawRect:(CGRect)rect {

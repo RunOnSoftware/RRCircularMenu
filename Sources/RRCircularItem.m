@@ -50,7 +50,6 @@
     _inactiveTextColor = _release(_inactiveTextColor);
     _activeTextColor = _release(_activeTextColor);
     _font = _release(_font);
-    [super dealloc];
 }
 
 # pragma mark - Getters and Setters

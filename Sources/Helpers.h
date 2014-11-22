@@ -14,7 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 static inline id _release(id obj) {
-    if (obj) [obj release], obj = nil;
+    if (obj) obj = nil;
     return obj;
 }
 
